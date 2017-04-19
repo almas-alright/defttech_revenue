@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Yajra\Datatables\Facades\Datatables;
 use App\Revenue;
-
+use Carbon\Carbon;
 class RevenueController extends Controller
 {
 
@@ -19,7 +20,8 @@ class RevenueController extends Controller
      */
     public function index()
     {
-        return Revenue::whereBetween('entry_for', ['2017-04-02', '2017-04-08'])->get();
+        return view('revenue.showall');
+        // return Revenue::whereBetween('entry_for', ['2017-04-02', '2017-04-08'])->get();
     }
 
     /**
@@ -29,7 +31,7 @@ class RevenueController extends Controller
      */
     public function create()
     {
-        return view('welcome');
+        return view('revenue.create');
     }
 
     /**
@@ -60,7 +62,7 @@ class RevenueController extends Controller
 
         $revenue->save();
         
-        //return redirect('revenue');
+        return redirect('revenue');
     }
 
     /**
@@ -106,6 +108,27 @@ class RevenueController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function showall(){
+        $revenues = Revenue::all();
+        $ser = 1;
+        $tr;
+        foreach ($revenues as $revenue) {
+            
+            $tr[]= array(
+                'ser' => $ser ++,
+                'dayname'=> Carbon::parse($revenue->entry_for)->format('l'),
+                'date'=> $revenue->entry_for,
+                'desktop_spend'=> $revenue->desktop_spend,
+                'desktop_mod'=> $revenue->desktop_mod,
+                'mobile_spend'=> $revenue->mobile_spend,
+                'mobile_mod'=> $revenue->mobile_mod,                
+                );
+        }
+        //return $tr;
+
+         return Datatables::of($tr)->make(true);
     }
 
 }

@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'RevenueController@index');
+Route::get('/revenue-dttbl/showall', 'RevenueController@showall')->name('revenue-dttbl.showall');
 
 Route::resource('revenue', 'RevenueController');
 

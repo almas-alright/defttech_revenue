@@ -1,0 +1,32 @@
+body{
+	background: #f0f0f0;
+}
+
+a{text-decoration: none;}
+a:hover{color: #ff5722;}
+.report-list li a:after {
+	content: "\f105";
+	font-family: fontawesome;
+	margin-left: 15px;
+}
+
+.report-list li a:hover:after {
+	color: #ff5722;
+}
+
+.report-list li a i{
+	margin-right: 15px;
+}
+
+.w3-wrapper {
+	max-width: 98rem;
+	margin: 0 auto;	
+}
+
+.w3-clearfix {
+	clear: both!important;
+}
+
+.w3-box-shadow-bottom {
+	 box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08), 0 2px 6px 0 rgba(0, 0, 0, 0.08) !important;
+}

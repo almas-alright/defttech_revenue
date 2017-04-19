@@ -69,8 +69,8 @@
     background-color: #9bca5b;
     background-image: none;
     color: #fff;
-    /*-webkit-border-radius: 15px;
-    border-radius: 15px;*/
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
 }
 #full-clndr .event-listing {
     float: left;
@@ -89,10 +89,6 @@
 }
 #full-clndr .event-listing .event-item-location {
     font-weight: 400;
-}
-#full-clndr .days .day.selected{
-background-color: #F0F0F0;
-color: #9BCA5B;
 }
 .noselect {
     -moz-user-select: none;
