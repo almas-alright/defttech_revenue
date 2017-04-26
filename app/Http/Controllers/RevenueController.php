@@ -21,7 +21,7 @@ class RevenueController extends Controller
     public function index()
     {
         return view('revenue.showall');
-        // return Revenue::whereBetween('entry_for', ['2017-04-02', '2017-04-08'])->get();
+        
     }
 
     /**
@@ -129,6 +129,12 @@ class RevenueController extends Controller
         //return $tr;
 
          return Datatables::of($tr)->make(true);
+    }
+
+    public function showWeek($strat, $end){
+        $sa = Carbon::createFromFormat('m-d-Y',$start)->toDateString();
+        $ea = Carbon::createFromFormat('m-d-Y',$end)->toDateString();
+        return Revenue::whereBetween('entry_for', [$sa, $ea])->get();
     }
 
 }
