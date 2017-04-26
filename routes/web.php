@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'RevenueController@index');
-Route::get('/weel-of/{start}/{end}', 'RevenueController@showWeek')->name('revenue.week');
+Route::get('/week-of/{start}/{end}', 'RevenueController@showWeek')->name('revenue.week');
 Route::get('/revenue-dttbl/showall', 'RevenueController@showall')->name('revenue-dttbl.showall');
 
 Route::resource('revenue', 'RevenueController');

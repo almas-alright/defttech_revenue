@@ -131,9 +131,9 @@ class RevenueController extends Controller
          return Datatables::of($tr)->make(true);
     }
 
-    public function showWeek($strat, $end){
-        $sa = Carbon::createFromFormat('m-d-Y',$start)->toDateString();
-        $ea = Carbon::createFromFormat('m-d-Y',$end)->toDateString();
+    public function showWeek($start, $end){
+        $sa = Carbon::createFromFormat('Y-m-d',$start)->toDateString();
+        $ea = Carbon::createFromFormat('Y-m-d',$end)->toDateString();
         return Revenue::whereBetween('entry_for', [$sa, $ea])->get();
     }
 

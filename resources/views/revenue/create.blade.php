@@ -63,7 +63,7 @@
                         </div>
                         </div>
                         <div class="w3-col s8 m10 l10">
-                        <div class="month"><%= month %></div>
+                        <div class="month"><%= month %> <%= year %></div>
                         </div>
                         <div class="w3-col s2 m1 l1">
                         <div class="clndr-next-button">

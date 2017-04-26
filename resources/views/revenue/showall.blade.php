@@ -43,9 +43,10 @@
 @section('script')
 
 <script type="text/javascript" src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/1.10.15/api/sum().js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-   $('#revenues').DataTable({
+   var tbl = $('#revenues').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": "{{ route('revenue-dttbl.showall') }}",
@@ -57,8 +58,11 @@ $(document).ready(function() {
             {data: 'desktop_mod', name: 'desktop_mod'},
             {data: 'mobile_spend', name: 'mobile_spend'},
             {data: 'mobile_mod', name: 'desktop_mod'},
-        ]
+        ],
+        
     });
+   tbl.column().data().sum();
+   console.log("dssd")
 
    $('#revenues_filter, #revenues_length').addClass('w3-margin-bottom');
 });
