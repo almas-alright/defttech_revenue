@@ -30,3 +30,7 @@ a:hover{color: #ff5722;}
 .w3-box-shadow-bottom {
 	 box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08), 0 2px 6px 0 rgba(0, 0, 0, 0.08) !important;
 }
+
+.e-title{
+	text-transform: capitalize;
+}

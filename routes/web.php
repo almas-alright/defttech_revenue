@@ -12,7 +12,8 @@
 */
 
 Route::get('/', 'RevenueController@index');
-Route::get('/week-of/{start}/{end}', 'RevenueController@showWeek')->name('revenue.week');
+Route::get('/revenue/{type}/status', 'RevenueController@status')->name('revenue.status');
+Route::get('/date-b2in/{start}/{end}', 'RevenueController@showRange')->name('revenue.week');
 Route::get('/revenue-dttbl/showall', 'RevenueController@showall')->name('revenue-dttbl.showall');
 
 Route::resource('revenue', 'RevenueController');

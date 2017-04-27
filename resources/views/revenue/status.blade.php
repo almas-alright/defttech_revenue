@@ -10,7 +10,7 @@
     <div class="w3-row">
         <div class="w3-col s12 m12 l12">
             <div class="w3-card w3-padding w3-margin">
-                <h1>All Entry</h1> <a href="{{ route('revenue.create') }}" class="w3-button w3-cyan">Add New</a>
+                <h1 class="e-title">{{ $type }} Entry</h1> <a href="{{ route('revenue.create') }}" class="w3-button w3-cyan">Add New</a>
                 <hr>
 
                 <table id="revenues" class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
@@ -22,7 +22,7 @@
                             <th class="col-md-1">Desktop Spend</th>
                             <th class="col-md-1">Desktop Modifier</th>
                             <th class="col-md-1">Mobile Spend</th>
-                            <th class="col-md-1">Mobile Modifier</th>
+                            <th class="col-md-1">Mobile Modifier</th>                   
                             <th class="col-md-1">*</th>                            
                         </tr>
                     </thead>
@@ -61,11 +61,17 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function() {
+   var from_date = localStorage.getItem("from_date"); 
+   var to_date = localStorage.getItem("to_date");
+
+   console.log('date range = '+from_date+'----'+to_date)
    var tbl = $('#revenues').DataTable({
         "processing": true,
         "serverSide": true,
         "ordering": false,
-        "ajax": "{{ route('revenue-dttbl.showall') }}",
+        "bLengthChange": false,
+        "paging": false,
+        "ajax": "{{ url('/') }}/date-b2in/"+from_date+"/"+to_date,
         "lengthMenu": [ 7, 14, 21, 28, 35, 42, 49, 56],
         "columns": [
             {data: 'DT_Row_Index', name: 'DT_Row_Index'},

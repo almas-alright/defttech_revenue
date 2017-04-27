@@ -35,7 +35,7 @@
                   <% _.each(daysOfTheWeek, function(day) { %><div class="day-header"><%= day %></div><% }); %>
                 </div>
                 <% for(var i = 0; i < numberOfRows; i++){ %>
-                <div class="weekset">
+                <div class="weekset wr-<%= i %>">
                     <% for(var j = 0; j < 7; j++){ %>
                     <% var d = j + i * 7; %>
                         <div class="<%= days[d].classes %>" >
@@ -60,7 +60,7 @@
                             <!-- <label>Mobile Spend</label> -->
                             <input class="w3-input w3-border-0 w3-light-grey" type="text" id="date_x" name="date_x" placeholder="From dd/mm/yyyy">
                             <!-- <label>Mobile Modifier</label> -->
-                            <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="text" id="date_y" name="date_y" placeholder="From dd/mm/yyyy">
+                            <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="text" id="date_y" name="date_y" placeholder="To dd/mm/yyyy">
                             <button class="w3-button w3-light-green w3-text-white w3-block w3-hover-green w3-margin-top" id="show_range">Show</button>
                 </div>
 
@@ -102,10 +102,13 @@
         <!-- MODAL -->
         <div id="id01" class="w3-modal">
             <div class="w3-modal-content">
-              <div class="w3-container">
+              
                 <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <p>Select Date First</p>                
-              </div>
+                <div class="w3-container w3-pale-yellow">
+                  <h3>Warning!</h3>
+                  <p>First Select Date</p>
+                </div>               
+              
             </div>
         </div>
         <!-- Script -->
@@ -133,8 +136,11 @@
                             var value = theDate;
                             var firstDate = moment(value, "YYYY-MM-DD").day(1).format("YYYY-MM-DD");
                             var lastDate =  moment(value, "YYYY-MM-DD").day(7).format("YYYY-MM-DD");
-                            window.location.href="{{ url('/') }}/week-of/"+firstDate+"/"+lastDate;
-                          console.log(firstDate+" "+lastDate);
+                            localStorage.setItem("from_date", firstDate);
+                            localStorage.setItem("to_date", lastDate);
+                            
+                            window.location.href="{{ route('revenue.status', ['weekly']) }}";
+                          
                         },
                     }
                 });
@@ -151,12 +157,16 @@
                     var to = $('#date_y').val();
 
                     if(from && to){
-                       window.location.href="{{ url('/') }}/week-of/"+from+"/"+to; 
+                        localStorage.setItem("from_date", from);
+                        localStorage.setItem("to_date", to);
+                       window.location.href="{{ route('revenue.status', ['range']) }}";
                     } else{
                         $('#id01').css('display', 'block');
                     }
 
                 });
+
+                console.log('rn = {!! Route::currentRouteName() !!}');
 
             });
 
@@ -166,7 +176,7 @@
 
         <script>
     function w3_open() {
-        document.getElementById("main").style.marginLeft = "25%";
+        document.getElementById("main").style.marginLeft = "15%";
         document.getElementById("mySidebar").style.width = "auto";
         document.getElementById("mySidebar").style.display = "block";
         document.getElementById("openNav").style.display = 'none';
