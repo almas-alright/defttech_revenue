@@ -20,6 +20,7 @@ Route::resource('revenue', 'RevenueController');
 
 Route::get('/test', 'TestController@index');
 Route::post('/check', 'TestController@checkPost')->name('check.post');
+Route::get('/test/fact', 'TestController@fact')->name('test.json');
 
 Auth::routes();
 
