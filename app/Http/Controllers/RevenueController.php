@@ -122,7 +122,7 @@ class RevenueController extends Controller
             $tr[]= array(
                 'id'=>$revenue->id,              
                 'dayname'=> Carbon::parse($revenue->entry_for)->format('l'),
-                'date'=> $revenue->entry_for,
+                'date'=> Carbon::createFromFormat('Y-m-d', $revenue->entry_for)->format('d-M-y'),
                 'desktop_spend'=> $revenue->desktop_spend,
                 'desktop_mod'=> $revenue->desktop_mod,
                 'mobile_spend'=> $revenue->mobile_spend,
@@ -143,28 +143,29 @@ class RevenueController extends Controller
         $sa = Carbon::createFromFormat('Y-m-d',$start)->toDateString();
         $ea = Carbon::createFromFormat('Y-m-d',$end)->toDateString();
         $revenues = Revenue::whereBetween('entry_for', [$sa, $ea])->orderByDesc('entry_for')->get();
-
         $tr;
-        foreach ($revenues as $revenue) {
-            
-            $tr[]= array(
-                'id'=>$revenue->id,               
-                'dayname'=> Carbon::parse($revenue->entry_for)->format('l'),
-                'date'=> $revenue->entry_for,
-                'desktop_spend'=> $revenue->desktop_spend,
-                'desktop_mod'=> $revenue->desktop_mod,
-                'mobile_spend'=> $revenue->mobile_spend,
-                'mobile_mod'=> $revenue->mobile_mod,                
-                );
-        }
-        //return $tr;
-
+        if(count($revenues) > 0){
+            foreach ($revenues as $revenue) {            
+                $tr[]= array(
+                    'id'=>$revenue->id,               
+                    'dayname'=> Carbon::parse($revenue->entry_for)->format('l'),
+                    'date'=> Carbon::createFromFormat('Y-m-d', $revenue->entry_for)->format('d-M-y'),
+                    'desktop_spend'=> $revenue->desktop_spend,
+                    'desktop_mod'=> $revenue->desktop_mod,
+                    'mobile_spend'=> $revenue->mobile_spend,
+                    'mobile_mod'=> $revenue->mobile_mod,                
+                    );
+            }        
+        
          return Datatables::of($tr)
          ->addIndexColumn()
          ->addColumn('operations','<a class="btn btn-xs btn-info" href="{{ route( \'revenue.edit\', [$id]) }}"><i class="fa fa-pencil-square-o"></i></a>
                     <a class="btn btn-xs btn-danger" href="{{ route( \'revenue.destroy\', [$id]) }}"><i class="fa fa-trash-o"></i></a>')
          ->rawColumns(['operations'])
          ->make(true);
+     } else{
+        return null;
+     }
     }
 
 }

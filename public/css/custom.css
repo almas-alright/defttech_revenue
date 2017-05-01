@@ -34,3 +34,8 @@ a:hover{color: #ff5722;}
 .e-title{
 	text-transform: capitalize;
 }
+
+#canvas{
+	max-height: 200px;
+	min-height: 150px;
+}

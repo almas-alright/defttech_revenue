@@ -19,16 +19,22 @@ class TestController extends Controller
     public function fact(){
     	$revenues = collect(Revenue::orderByDesc('entry_for')->get());
     	
-    	// $size = count($revenues);
-    	// $collection = array();
-    	// for($i = 0; $i <= $size - 1; $i++){
-    		
-    	// 		$collection['label'][] = $revenues[$i]['entry_for'];
-    	// 		$collection['ds'][] = $revenues[$i]['desktop_spend'];
-    		
-    	// }
+    	$tr;
+        foreach ($revenues as $revenue) {
+            
+            $tr[]= array(
+                'id'=>$revenue->id,              
+                'entry_for'=>
+                Carbon::createFromFormat('Y-m-d', $revenue->entry_for)->format('d-M-y'),
+                'date'=> $revenue->entry_for,
+                'desktop_spend'=> $revenue->desktop_spend,
+                'desktop_mod'=> $revenue->desktop_mod,
+                'mobile_spend'=> $revenue->mobile_spend,
+                'mobile_mod'=> $revenue->mobile_mod,                
+                );
+        }
 
-    	return $revenues;
+    	return $tr;
 
     	
     }

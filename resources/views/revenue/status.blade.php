@@ -13,6 +13,10 @@
                 <h1 class="e-title">{{ $type }} Entry</h1> <a href="{{ route('revenue.create') }}" class="w3-button w3-cyan">Add New</a>
                 <hr>
 
+                <div class="w3-padding" style="width:100%;">
+                    <canvas id="canvas"></canvas>
+                </div>
+                <hr>
                 <table id="revenues" class="w3-table w3-bordered w3-striped w3-border test w3-hoverable">
                     <thead>
                         <tr class="w3-green ">
@@ -44,7 +48,27 @@
 @section('script')
 
 <script type="text/javascript" src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/1.10.15/api/sum().js"></script>
+<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/1.10.15/api/sum().js">    
+</script>
+<script src="{{ asset('assets/chart/Chart.bundle.js') }}"></script>
+<script>   
+    window.route = '{!! $type !!}';
+    window.chartColors = {
+    red: 'rgb(255, 99, 132)',
+    red_deff: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    orange_deff: 'rgba(255, 159, 64, 0.5)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    blue_deff: 'rgb(54, 162, 235, 0.5)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(231,233,237)'
+};
+
+</script>
+
+
 <script>
     jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             return this.flatten().reduce( function ( a, b ) {
@@ -60,17 +84,19 @@
         } );
 </script>
 <script type="text/javascript">
+var from_date = localStorage.getItem("from_date"); 
+var to_date = localStorage.getItem("to_date");
 $(document).ready(function() {
-   var from_date = localStorage.getItem("from_date"); 
-   var to_date = localStorage.getItem("to_date");
+   
 
    console.log('date range = '+from_date+'----'+to_date)
    var tbl = $('#revenues').DataTable({
         "processing": true,
         "serverSide": true,
-        "ordering": false,
-        "bLengthChange": false,
-        "paging": false,
+        "ordering": (window.route == "range"? true:false),
+        "bLengthChange": (window.route == "range"? true:false),
+        "searching": (window.route == "range"? true:false),
+        "paging": (window.route == "range"? true:false),
         "ajax": "{{ url('/') }}/date-b2in/"+from_date+"/"+to_date,
         "lengthMenu": [ 7, 14, 21, 28, 35, 42, 49, 56],
         "columns": [
@@ -114,4 +140,70 @@ $(document).ready(function() {
    $('#revenues_filter, #revenues_length').addClass('w3-margin-bottom');
 });
 </script>
+<script>
+
+window.onload = function() {
+
+    var labels = [], ds = [], ms = [], dm = [], mm = [];
+    
+        $.getJSON( "{{ url('/') }}/date-b2in/"+from_date+"/"+to_date, function( json ) {
+            
+            for (var i = 0; i < json.data.length; i++) {
+                labels.push(json.data[i].date);            
+                ds.push(json.data[i].desktop_spend);            
+                ms.push(json.data[i].mobile_spend);             
+                dm.push(json.data[i].desktop_mod);              
+                mm.push(json.data[i].mobile_mod);               
+            }
+          
+         }).done(function(){ 
+
+        var buyerData = {
+          labels : labels,
+          datasets : [
+            {
+                label: "Desktop Spend",
+                fill: false,
+                backgroundColor: window.chartColors.green,
+                borderColor: window.chartColors.green,
+                borderWidth: 1,
+                // lineTension: 0.2,
+                data : ds
+            },{
+                label: "Desktop Mod",
+                fill: false,
+                backgroundColor: window.chartColors.blue,
+                borderColor: window.chartColors.blue,
+                borderWidth: 1,
+                // lineTension: 0.2,
+                data : dm
+            },{
+                label: "Mobile Spend",
+                fill: false,
+                backgroundColor: window.chartColors.red,
+                borderColor: window.chartColors.red,
+                borderWidth: 1,
+                // lineTension: 0.2,
+                data : ms
+            },{
+                label: "Mobile Spend",
+                fill: false,
+                backgroundColor: window.chartColors.orange,
+                borderColor: window.chartColors.orange,
+                borderWidth: 1,
+                // lineTension: 0.2,
+                data : mm
+            }
+          ]
+        };
+
+    var buyers = document.getElementById('canvas').getContext('2d');
+    var myLineChart = new Chart(buyers, {
+    type: 'line',
+    data: buyerData,
+    });
+
+     });
+}
+    </script>
 @endsection
