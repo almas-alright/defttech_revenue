@@ -109,6 +109,9 @@ $(document).ready(function() {
             {data: 'mobile_mod', name: 'desktop_mod'},
             {data: 'operations', name: 'operations'},
         ],
+        "language": {
+        "emptyTable": "No data found between: "+moment(from_date).format('MMM-DD-YYYY')+" to "+moment(to_date).format('MMM-DD-YYYY')
+        }
         
     });
 

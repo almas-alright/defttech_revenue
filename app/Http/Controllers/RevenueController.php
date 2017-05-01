@@ -84,7 +84,8 @@ class RevenueController extends Controller
      */
     public function edit($id)
     {
-        //
+        $revenue = Revenue::find($id);
+        return view('revenue.edit', compact('revenue'));
     }
 
     /**
@@ -96,7 +97,27 @@ class RevenueController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,
+            [
+            'entry_for' => 'required',
+            'desktop_spend' => 'required',
+            'desktop_mod' => 'required',
+            'mobile_spend' => 'required',
+            'mobile_mod' => 'required',
+            ]);
+
+        $revenue = Revenue::find($id);
+        $revenue->user_id = $request->input('user_id');
+        $revenue->entry_for = $request->input('entry_for');
+        $revenue->desktop_spend = $request->input('desktop_spend');
+        $revenue->desktop_mod = $request->input('desktop_mod');
+        $revenue->mobile_spend = $request->input('mobile_spend');
+        $revenue->mobile_mod = $request->input('mobile_mod');
+        $revenue->status = true;        
+
+        $revenue->save();
+        
+        return redirect('revenue');    
     }
 
     /**
@@ -155,7 +176,10 @@ class RevenueController extends Controller
                     'mobile_spend'=> $revenue->mobile_spend,
                     'mobile_mod'=> $revenue->mobile_mod,                
                     );
-            }        
+            } 
+            } else{
+            $tr = [];
+            }      
         
          return Datatables::of($tr)
          ->addIndexColumn()
@@ -163,9 +187,7 @@ class RevenueController extends Controller
                     <a class="btn btn-xs btn-danger" href="{{ route( \'revenue.destroy\', [$id]) }}"><i class="fa fa-trash-o"></i></a>')
          ->rawColumns(['operations'])
          ->make(true);
-     } else{
-        return null;
-     }
+     
     }
 
 }

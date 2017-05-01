@@ -3,26 +3,31 @@
 @section('content')
 <div class="w3-container">
     <div class="w3-row">
-        <div class="w3-col s12 m6 l3">
+        <div class="w3-col s12 m12 l12 w3-padding">
+            <h1 class="title">Add Data</h1>
+        </div>
+        <div class="w3-col s12 m6 l3">           
 
-            <form method="post" action="{{ route('revenue.store') }}">
+            <form method="post" action="{{ route('revenue.store') }}@yield('edtID')">
                 {{ csrf_field() }}
+                @section('editMethod')
+                    @show
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-            <input id="date" type="hidden" name="entry_for" step="" value="">
+            <input id="date" type="hidden" name="entry_for" step="" value="@yield('entry_for')">
                 <div class="w3-card w3-margin w3-white w3-padding-16">
                     <div class="w3-container">
                         <!-- <label>Desktop Spend</label> -->
-                        <input class="w3-input w3-border-0 w3-light-grey" type="number" step="0.01" name="desktop_spend" value="" placeholder="Desktop Spend">
+                        <input class="w3-input w3-border-0 w3-light-grey" type="number" step="0.01" name="desktop_spend" value="@yield('desktop_spend')" placeholder="Desktop Spend">
                         <!-- <label>Desktop Modifier</label> -->
-                        <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="number" step="0.01" name="desktop_mod" value="" placeholder="Desktop Modifier">
+                        <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="number" step="0.01" name="desktop_mod" value="@yield('desktop_mod')" placeholder="Desktop Modifier">
                     </div>
                 </div>
                 <div class="w3-card w3-margin w3-white w3-padding-16">
                     <div class="w3-container">
                         <!-- <label>Mobile Spend</label> -->
-                        <input class="w3-input w3-border-0 w3-light-grey" type="number" step="0.01" name="mobile_spend" value="" placeholder="Mobile Spend">
+                        <input class="w3-input w3-border-0 w3-light-grey" type="number" step="0.01" name="mobile_spend" value="@yield('mobile_spend')" placeholder="Mobile Spend">
                         <!-- <label>Mobile Modifier</label> -->
-                        <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="number" step="0.01" name="mobile_mod" value="" placeholder="Mobile Modifier">
+                        <input class="w3-input w3-border-0 w3-light-grey w3-margin-top" type="number" step="0.01" name="mobile_mod" value="@yield('mobile_mod')" placeholder="Mobile Modifier">
                     </div>
                 </div>
 
@@ -116,6 +121,7 @@
             $(this).addClass('selected');
         });
 
+        $('title').html('Add revenue data');
     });
 
 </script>
